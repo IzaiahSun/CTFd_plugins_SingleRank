@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>Scoreboard for A Single Category</h1>
+	</div>
+</div>
+<div class="container">
+	{% if errors %}
+	<div id='errors' class="row">
+		<div class="col-md-12">
+		{% for error in errors %}
+			<h1 class="text-center">{{ error }}</h1>
+		{% endfor %}
+		</div>
+	</div>
+	{% else %}
+		{% if score_frozen %}
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="text-center">Scoreboard has been frozen.</h1>
+			</div>
+		</div>
+		{% endif %}
+
+		{% if categories %}
+        <ul class="nav nav-tabs nav-fill pt-5" role="tablist">
+        {% for category in categories %}
+            <li role="presentation"><a href="#{{category}}" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="{{category}}" aria-selected="true">{{category}}</a></li>
+        {% endfor %}
+        </ul>
+
+		<div id="scoreboard" class="row">
+			<div class="col-md-12 tab-content">
+            {% for index,category in enumerate(categories) %}
+                <div class="tab-pane fade" id="{{ category }}" role="tabpanel" aria-labelledby="nav-solves-tab">
+				<table class="table table-striped" >
+                    <caption>{{ category }}</caption>
+					<thead>
+						<tr>
+							<td scope="col" width="10px"><b>Place</b></td>
+							<td scope="col"><b>Team</b></td>
+							<td scope="col"><b>Score</b></td>
+						</tr>
+					</thead>
+					<tbody>
+					{% for rank in ranks[index] %}
+						<tr>
+							<th scope="row" class="text-center">{{ loop.index }}</th>
+							<td>
+								<a href="{{ generate_account_url(rank[0]) }}">
+									{{ rank[1] | truncate(50) }}
+
+									{% if rank[2] %}
+										{% if get_config('user_mode') == 'teams' %}
+										<a href="https://majorleaguecyber.org/t/{{ rank[1] }}">
+											<span class="badge badge-primary">Official</span>
+										</a>
+										{% elif get_config('user_mode') == 'users' %}
+										<a href="https://majorleaguecyber.org/u/{{ rank[1] }}">
+											<span class="badge badge-primary">Official</span>
+										</a>
+										{% endif %}
+									{% endif %}
+								</a>
+							</td>
+							<td>{{ rank[3] }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+                </div>
+            {% endfor %}
+			</div>
+		</div>
+		{% endif %}
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{#	<script src="{{ url_for('views.themes', path='js/vendor/plotly.min.js') }}"></script>#}
+	<script src="{{ url_for('views.themes', path='js/utils.js') }}"></script>
+{#	<script src="{{ url_for('views.themes', path='js/scoreboard.js') }}"></script>#}
+{% endblock %}

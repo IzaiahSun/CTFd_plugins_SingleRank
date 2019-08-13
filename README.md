@@ -1,2 +1,4 @@
-# CTFd_plugins_SingleRank
-CTFd scoreboard for a single category
+# CTFd Rank for A Single Category
+
+Add a page of ranks for a single category.
+![Pic](img.png)

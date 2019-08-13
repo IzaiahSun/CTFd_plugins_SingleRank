@@ -3,12 +3,11 @@ import os
 
 from CTFd.models import Users, Challenges
 from sqlalchemy.sql import and_
-from CTFd.utils.decorators import admins_only
-from CTFd.utils.user import is_admin
 from CTFd.utils.scores import get_standings
 from CTFd.utils.plugins import override_template
 from CTFd.utils import get_config
 from CTFd.utils.modes import TEAMS_MODE
+from CTFd.utils import config
 
 
 
@@ -54,8 +53,8 @@ def load(app):
         # override templates
         dir_path = os.path.dirname(os.path.realpath(__file__))
         template_path = os.path.join(dir_path, 'assets')
-        template_path = os.path.join(template_path, 'singlerank.html')
-        override_template("singlerank.html", open(template_path).read())
+        template_path = os.path.join(template_path, 'scoreboard.html')
+        override_template("scoreboard.html", open(template_path).read())
 
         # get categories
         categories = get_all_categories()
@@ -79,4 +78,6 @@ def load(app):
         # rank[2] oauth_id
         # rank[3] score
 
-        return render_template("singlerank.html", categories=categories, enumerate=enumerate, ranks=ranks)
+        return render_template("scoreboard.html", categories=categories, enumerate=enumerate, ranks=ranks, standings=standings, score_frozen=config.is_scoreboard_frozen())
+
+    app.view_functions['scoreboard.listing'] = view_single_rank

@@ -48,7 +48,6 @@ def get_all_categories():
 
 
 def load(app):
-    @app.route('/singlerank', methods=['GET'])
     def view_single_rank():
         # override templates
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -71,7 +70,7 @@ def load(app):
                 oauth_id = standing.oauth_id
                 score = get_user_scores_for_each_category(standing.account_id, categories)[index1]
                 ranks[index1].append([account_id, name, oauth_id, score])
-            sorted(ranks[index1], key=(lambda x: x[3]), reverse=True)
+            ranks[index1]=sorted(ranks[index1], key=(lambda x: x[3]), reverse=True)
 
         # rank[0] account_id
         # rank[1] name

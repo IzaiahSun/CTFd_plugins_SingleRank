@@ -95,6 +95,7 @@
 					</thead>
 					<tbody>
 					{% for rank in ranks[index] %}
+                        {% if rank[3]!=0 %}
 						<tr>
 							<th scope="row" class="text-center">{{ loop.index }}</th>
 							<td>
@@ -116,6 +117,7 @@
 							</td>
 							<td>{{ rank[3] }}</td>
 						</tr>
+                        {% endif %}
 					{% endfor %}
 					</tbody>
 				</table>
